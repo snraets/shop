@@ -18,7 +18,8 @@
     "puppeteer-extra": "^3.1.9",
     "puppeteer-extra-plugin-stealth": "^2.4.9",
     "random-int": "^2.0.1",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "zip-a-folder": "0.0.12"
   },
   "devDependencies": {
     "@types/jest": "^25.1.3",

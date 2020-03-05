@@ -1,9 +1,11 @@
 import puppeteer from 'puppeteer-extra';
-// add stealth plugin and use defaults (all evasion techniques)
+
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import {from} from 'rxjs';
 import {concatMap, filter, map, mergeMap} from 'rxjs/operators';
+
+import {zip} from 'zip-a-folder';
 
 import {links, Link} from './loadLinks';
 import {getDomain} from './domain';
@@ -11,7 +13,7 @@ import {folder} from './createSnapshotFolder';
 import {Page} from './newPage';
 
 const filterDomains = filter((link: Link) => {
-    return link.domain === 'samsclub'; // kay kohls lowes macys neimanmarcus newegg shop.nordstrom officedepot oldnavy overstock pier1, qvc samsclub sears sephora staples target victoriassecret walmart wayfair
+    return link.domain === 'academy'; // kay kohls lowes macys neimanmarcus newegg shop.nordstrom officedepot oldnavy overstock pier1, qvc samsclub sears sephora staples target victoriassecret walmart wayfair
     // return link.domain === 'academy' ||
     //     link.domain === 'abt' || 
     //     link.domain === 'amazon'
@@ -50,7 +52,7 @@ const filterDomains = filter((link: Link) => {
     puppeteer.use(StealthPlugin());
 
     const browserOptions = {
-        headless: false, 
+        headless: true, 
         timeout: 600000,
         defaultViewport: {
             width:1200, 
@@ -75,7 +77,10 @@ const filterDomains = filter((link: Link) => {
                 console.error(error);
                 browser.close();
             },
-            () => browser.close()
+            async () => {
+                await zip('./snapshots', './snapshots.zip')
+                browser.close();
+            }
         );
 
 })();
