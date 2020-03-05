@@ -14,6 +14,8 @@ export const waitUntil = (domain) => {
             return 'domcontentloaded';
         case 'harborfreight':
             return 'networkidle0';
+        case 'samsclub':
+            return 'domcontentloaded';
         case 'worldmarket':
             return 'networkidle2';
         default:
@@ -28,7 +30,16 @@ export const Page = (browser: puppeteer.Browser) => {
         await page.setDefaultNavigationTimeout(0); 
         await page.goto(link.Link, {waitUntil: waitUntil(link.domain)}); // 'networkidle0'
 
-        if (link.domain === 'gap' || link.domain === 'oldnavy.gap') {
+        if (link.domain === 'amazon') {
+            await page.waitFor(1000);
+            await page.mouse.click(0, 0);
+            await page.screenshot({path: path(link)});  // , fullPage: true
+            await page.mouse.move(random(20, 250), random(20, 250));
+            await page.mouse.move(random(20, 250), random(20, 250));
+            await page.mouse.click(random(0, 25), random(0, 25));
+            await page.close();
+            return of(link)
+        } else if (link.domain === 'gap' || link.domain === 'oldnavy.gap') {
             await page.waitFor(1000);
             await page.mouse.click(0, 0);
             await page.waitFor(1000);            
@@ -44,6 +55,10 @@ export const Page = (browser: puppeteer.Browser) => {
             await page.waitFor(1000);   
             await page.mouse.click(0, 0); 
             await page.waitFor(1000);              
+        } else if (link.domain === 'samsclub') {
+            // await page.screenshot({path: path(link)});  // , fullPage: true
+            // await page.close();
+            // return of(link)                        
         } else {
             await page.waitFor(1000);
             await page.mouse.click(0, 0);
@@ -51,9 +66,9 @@ export const Page = (browser: puppeteer.Browser) => {
         }
 
         await page.screenshot({path: path(link)});  // , fullPage: true
-        await page.mouse.move(random(20, 250), random(20, 250));
-        await page.mouse.move(random(20, 250), random(20, 250));
-        await page.mouse.click(random(0, 25), random(0, 25));
+        // await page.mouse.move(random(20, 250), random(20, 250));
+        // await page.mouse.move(random(20, 250), random(20, 250));
+        // await page.mouse.click(random(0, 25), random(0, 25));
         await page.close();
         return of(link)
     };
